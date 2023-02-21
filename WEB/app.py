@@ -95,10 +95,13 @@ def service():
         image_as_str = url.png_as_base64_str(scale=5)
         return render_template("service.html", name = session['name'], url=image_as_str)
 
-@app.route("/contact/", methods=['POST', 'GET'])
+@app.route("/contact", methods=['POST', 'GET'])
 def contact():
     return render_template("contact.html")
 
+@app.route("/instructions", methods=['POST', 'GET'])
+def instructions():
+    return render_template("HowtoUse.html")
 
 @app.route("/getdata", methods=['POST', 'GET'])
 def getdata():

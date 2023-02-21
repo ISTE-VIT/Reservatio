@@ -7,7 +7,7 @@
     <meta name="keywords" content=""/>
     <meta name="description" content=""/>
     <meta name="author" content=""/>
-    <title>Reservatio</title>
+    <title>How to Use</title>
     
     <!--  Website icon links  -->
     <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static',filename='apple-touch-icon.png') }}">
@@ -16,6 +16,7 @@
     <!-- <link rel="manifest" href="/site.webmanifest"> -->
     
     <!-- slider stylesheet -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.1.3/assets/owl.carousel.min.css"/>
   
     <!-- bootstrap core css -->
@@ -29,7 +30,11 @@
     
     <!-- responsive style -->
     <link href="{{ url_for('static',filename='responsive.css') }}" rel="stylesheet"/>
+   
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   </head>
+  <!--________________________________________________________________________________________________________________________________________-->
   <body>
     <div class="hero_area">
       <!-- header section strats -->
@@ -37,7 +42,7 @@
         <div class="container-fluid">
           <div class="row">
             <div class="col-lg-12">
-              <nav class="navbar navbar-expand-lg custom_nav-container ">
+              <nav style="margin-bottom: 0;" class="navbar navbar-expand-lg custom_nav-container ">
                 <a class="navbar-brand" href="{{ url_for('index') }}">
                   <span style="font-size: 25px; padding:3px 5px; font-weight:900; text-shadow: #5ac7af 3px 2px;">
                     <img src="{{ url_for('static',filename='favicon-16x16.png') }}" alt="" style="width: 30px; border: white solid 1px; border-radius: 25%;">&nbsp&nbsp
@@ -50,14 +55,13 @@
   
                 <div class="collapse navbar-collapse" id="navbarSupportedContent" style="flex-direction: row-reverse;">
                   <div class="d-flex  flex-column flex-lg-row align-items-center">
-                    <ul class="navbar-nav  ">
+                    <ul class="navbar-nav">
                       <li class="nav-item">
-                        <a class="nav-link nav_items" href="{{ url_for('contact') }}">Contact Us</a>
+                        <a class="nav-link nav_items" href="{{ url_for('index') }}">Get Started</a>
                       </li>
                       <li class="nav-item active">
-                        <a class="nav-link nav_items" href="{{ url_for('instructions') }}">How to Use?<span class="sr-only">(current)</span></a>
+                        <a class="nav-link nav_items" href="{{ url_for('contact') }}">Contact Us<span class="sr-only">(current)</span></a>
                       </li>
-                      
                     </ul>
                   </div>
                 </div>
@@ -71,69 +75,63 @@
       <!-- slider section -->
       <section class=" slider_section " style="background: linear-gradient( 0deg,#1AA789 -92.53%, #1AA789 -92.51%, #d0f8e7 57.43%); ">
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-          <div class="carousel-inner">
-            <div class="carousel-item active">
-              <div class="container">
-                <div class="row">
-                  <div class="col-lg-5 col-md-6">
-                    <div class="slider_detail-box">
-                      <h1 style="color: #1aa789;">
-                        Keep Track  <br/>
-                        Of Your Queue <br/>
-                        Easily
-                      </h1>
-                      <p style="color: #1aa789;">
-                        
-                      Enter your restaurant to create your very own QRcode to keep track of your customers
-                      </p>
-                      <div class="btn-box">
-                        <a href="{{ url_for('login_page') }}" class="btn-1">
-                          Get Started
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="slider_img-box">
-                      <img src="{{ url_for('static',filename='Brazuca UI Design.png') }}" alt="img"/>
-                    </div>
-                  </div>
-                </div>
+          <div id="myCarousel" class="carousel slide" data-ride="carousel">
+           
+            
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner">
+              <div class="item active ">
+                <img class =" mx-auto" src="{{ url_for('static',filename='Page 1.png') }}" alt="Page 1" style="width:85%;">
+              </div>
+        
+              <div class="item">
+                <img class =" mx-auto" src="{{ url_for('static',filename='Page 2.png') }}" alt="Page 2" style="width:85%;">
+              </div>
+            
+              <div class="item">
+                <img class =" mx-auto" src="{{ url_for('static',filename='Page 3.png') }}" alt="Page 3" style="width:85%;">
               </div>
             </div>
+        
+            <!-- Left and right controls -->
+            <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+              <span class="glyphicon glyphicon-chevron-left"></span>
+              <span class="sr-only">Previous</span>
+            </a>
+            <a class="right carousel-control" href="#myCarousel" data-slide="next">
+              <span class="glyphicon glyphicon-chevron-right"></span>
+              <span class="sr-only">Next</span>
+            </a>
+          </div>
         </div>
       </section>
       
       
      
     
-    <div
-          class="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-0 px-4 px-xl-5 " style="background-color: #1aa789 ; ">
-        
-          <!-- Copyright -->
-          <br>
-          <div class="text-white mb-3 mb-md-0 pt-2" style="margin-right: auto">
-           <p class="pt-3 " style="padding-bottom: 5px;">Copyright © 2020. All rights reserved.</p> 
-          </div>
-          <!-- Copyright -->
-      
-          <!-- Right -->
-          <div class="pt-4">
-            <a href="#!" class="text-white me-4">
-              <i class="fa fa-facebook pr-3" style="color: #4267B2;"></i>
-            </a>
-            <a href="#!" class=" me-4">
-                <i class="fa-brands fa-square-instagram fa-lg fa-lg pr-3" style="color: #E1306C; size: 50px;"></i>
-            </a>
-          </div>
-          <!-- Right -->
-        </div>
-      </section>
+      <div
+      class="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-0 px-4 px-xl-5 " style="background-color: #1aa789 ; ">
+    
+      <!-- Copyright -->
+      <div class="text-white mb-3 mb-md-0" styl>
+       <p style="padding-bottom: 5px; padding-top: 20px;">Copyright © 2020. All rights reserved.</p> 
+      </div>
+      <!-- Copyright -->
   
+      <!-- Right -->
+      <div>
+        <a href="#!" class="text-white me-4">
+          <i class="fa fa-facebook pr-4" style="color: #4267B2;padding-top: 20px;"></i>
+        </a>
+        <a href="#!" class=" me-4">
+            <i class="fa-brands fa-square-instagram fa-lg fa-lg" style="color: #E1306C; size: 50px;"></i>
+        </a>
+      </div>
+      <!-- Right -->
+    </div>
   
-    <script type="text/javascript" src="jquery-3.4.1.min.js"></script>
-    <script type="text/javascript" src="bootstrap.js"></script>
-    <!-- <script src="/path/to/flickity.pkgd.min.js"></script> -->
+    <script type="text/javascript" src="{{ url_for('static',filename='jquery-3.4.1.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='bootstrap.js') }}"></script>
   
   </body>
 </html>
