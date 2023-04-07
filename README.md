@@ -19,6 +19,7 @@ Our product caters the need of the shoppers by:<br>
  ### Tech Stack 
 
 ●	HTML, CSS and  JS- Frontend<br>
+●	Flask<br>
 ●	Node and Express- Backend<br>
 ●	MongoDB and firebase - Database<br>
 ●	Kotlin- App-Frontend<br>
