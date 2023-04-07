@@ -10,7 +10,7 @@ Our product caters the need of the shoppers by:<br>
 
 <ul>
 <li>Providing QR scanning feature which helps cut down long lines .</li>
-<li>Providing an Image Scanning feature to search for a product by its image</li>
+<li>Providing an Image Scanning feature to enter in the virtual queue by scanning it for the particular service</li>
 <li>Also keeping track of the user and notifying them</li>
 </ul>
 
