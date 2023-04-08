@@ -18,6 +18,7 @@ import com.budiyev.android.codescanner.DecodeCallback
 import com.budiyev.android.codescanner.ScanMode
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.FirebaseMessagingService
 import com.vandit.reservatio.databinding.FragmentCameraBinding
 
 private const val CAMERA_REQUEST_CODE = 101
@@ -53,39 +54,14 @@ class CameraFragment : Fragment() {
             isFlashEnabled = false
 
             decodeCallback = DecodeCallback {
-                requireActivity().runOnUiThread {
-                    FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-                        if (!task.isSuccessful) {
-                            Log.w("TAG", "Fetching FCM registration token failed", task.exception)
-                            Toast.makeText(
-                                requireContext(),
-                                "Fetching FCM token failed",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            return@OnCompleteListener
-                        }
-
-                        // Get new FCM registration token
-                        var token = task.result
-                        Log.d("CameraFragment.kt", "VANDIT => onViewCreated:65 $token")
-
-                        token = token.replace("""[.:]""".toRegex(), "~_~")
-                        Log.d("CameraFragment.kt", "VANDIT => onViewCreated:73 $token")
-                        sharedPref.edit().putString("restaurant", it.text).apply()
-                        sharedPref.edit().putString("token", token).apply()
-
-                        FirebaseMessaging.getInstance().subscribeToTopic(token)
-                            .addOnCompleteListener { task1 ->
-                                if (!task1.isSuccessful) {
-                                    Log.d("CameraFragment.kt", "VANDIT => onViewCreated:80 => Subscription Failed => ${task1.exception}")
-                                } else {
-                                    Log.d("CameraFragment.kt", "VANDIT => onViewCreated:80 => Subscription Success")
-                                }
-                            }
-                        fragmentManager?.beginTransaction()
-                            ?.replace(R.id.nav_host_fragment, QueueFragment())?.commit()
-                    })
-                }
+                val prefs =
+                    activity?.getSharedPreferences("TOKEN_PREF", FirebaseMessagingService.MODE_PRIVATE)
+                var token = prefs?.getString("token", "")
+                token = token?.replace("""[.:]""".toRegex(), "~_~")
+                sharedPref.edit().putString("restaurant", it.text).apply()
+                sharedPref.edit().putString("token", token).apply()
+                fragmentManager?.beginTransaction()
+                    ?.replace(R.id.nav_host_fragment, QueueFragment())?.commit()
             }
         }
     }
