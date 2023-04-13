@@ -16,7 +16,6 @@ import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.messaging.FirebaseMessaging
 import com.vandit.reservatio.databinding.FragmentQueueBinding
 
 class QueueFragment : Fragment() {
@@ -37,8 +36,10 @@ class QueueFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val ai: ApplicationInfo? = context?.let {
-            context?.packageManager
-                ?.getApplicationInfo(it.packageName, PackageManager.GET_META_DATA)
+            context?.packageManager?.getApplicationInfo(
+                it.packageName,
+                PackageManager.GET_META_DATA
+            )
         }
         val value = ai?.metaData?.get("FIREBASE_URI")
         val FIREBASE_URI = value.toString()
@@ -51,8 +52,7 @@ class QueueFragment : Fragment() {
 
         var userName = "$name-$token"
 
-        database =
-            Firebase.database(FIREBASE_URI)
+        database = Firebase.database(FIREBASE_URI)
         myRef = database.getReference(restaurant.toString())
 
         if (un == null) {
@@ -69,7 +69,6 @@ class QueueFragment : Fragment() {
         }
 
         binding.leaveBTN.setOnClickListener {
-
             myRef.get().addOnCompleteListener {
                 val resultValue = it.result as DataSnapshot
                 val value = resultValue.getValue<HashMap<String, Int>>()
@@ -93,17 +92,6 @@ class QueueFragment : Fragment() {
 
                 myRef.child(userName).removeValue()
                 myRef.setValue(value)
-
-                FirebaseMessaging.getInstance()
-                    .unsubscribeFromTopic(token!!)
-                    .addOnCompleteListener { task1 ->
-                        if (!task1.isSuccessful) {
-                            Log.d(
-                                "QueueFragment.kt",
-                                "VANDIT => onViewCreated:105 => unSubscription failed"
-                            )
-                        }
-                    }
             }
 
             with(sharedPref.edit()) {
@@ -123,7 +111,6 @@ class QueueFragment : Fragment() {
             val resultValue = it.result as DataSnapshot
             val value = resultValue.getValue<HashMap<String, Int>>()
             val size = value?.size
-
             val map = mapOf(username to size!!)
             myRef.updateChildren(map)
         }
@@ -136,7 +123,7 @@ class QueueFragment : Fragment() {
                 val x = value?.filterKeys { it == un }
                 if (x != null) {
                     val flag = sharedPref.getInt("flag", 0)
-                    if(flag == 1 && x.values.isEmpty()){
+                    if (flag == 1 && x.values.isEmpty()) {
                         with(sharedPref.edit()) {
                             putString("username", null)
                             putBoolean("inQueue", false)

@@ -62,8 +62,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
-        Log.d("MyFCM.kt", "VANDIT => onNewToken:66 $token")
-
         val editor = getSharedPreferences("TOKEN_PREF", MODE_PRIVATE).edit()
         editor.putString("token", token)
         editor.apply()

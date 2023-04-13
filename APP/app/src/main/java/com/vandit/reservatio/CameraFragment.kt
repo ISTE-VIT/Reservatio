@@ -1,6 +1,7 @@
 package com.vandit.reservatio
 
 import android.content.Context
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -17,6 +18,9 @@ import com.budiyev.android.codescanner.CodeScanner
 import com.budiyev.android.codescanner.DecodeCallback
 import com.budiyev.android.codescanner.ScanMode
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.database.*
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.vandit.reservatio.databinding.FragmentCameraBinding
@@ -26,6 +30,8 @@ private const val CAMERA_REQUEST_CODE = 101
 class CameraFragment : Fragment() {
     lateinit var binding: FragmentCameraBinding
     private lateinit var codeScanner: CodeScanner
+    private lateinit var database: FirebaseDatabase
+    private lateinit var myRef: DatabaseReference
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,6 +48,15 @@ class CameraFragment : Fragment() {
         setupPermissions()
 
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+        val ai: ApplicationInfo? = context?.let {
+            context?.packageManager?.getApplicationInfo(
+                it.packageName,
+                PackageManager.GET_META_DATA
+            )
+        }
+        val value = ai?.metaData?.get("FIREBASE_URI")
+        val FIREBASE_URI = value.toString()
+        database = Firebase.database(FIREBASE_URI)
 
         codeScanner = CodeScanner(requireActivity(), binding.scannerView)
         codeScanner.apply {
@@ -55,13 +70,27 @@ class CameraFragment : Fragment() {
 
             decodeCallback = DecodeCallback {
                 val prefs =
-                    activity?.getSharedPreferences("TOKEN_PREF", FirebaseMessagingService.MODE_PRIVATE)
+                    activity?.getSharedPreferences(
+                        "TOKEN_PREF",
+                        FirebaseMessagingService.MODE_PRIVATE
+                    )
                 var token = prefs?.getString("token", "")
-                token = token?.replace("""[.:]""".toRegex(), "~_~")
-                sharedPref.edit().putString("restaurant", it.text).apply()
-                sharedPref.edit().putString("token", token).apply()
-                fragmentManager?.beginTransaction()
-                    ?.replace(R.id.nav_host_fragment, QueueFragment())?.commit()
+                token = token?.replace(".", "?")?.replace(":", "%")
+
+                myRef = database.getReference(it.toString())
+                myRef.addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val value = snapshot.value
+                        if (value != null) {
+                            sharedPref.edit().putString("restaurant", it.text).apply()
+                            sharedPref.edit().putString("token", token).apply()
+                            fragmentManager?.beginTransaction()
+                                ?.replace(R.id.nav_host_fragment, QueueFragment())?.commit()
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) = Unit
+                })
             }
         }
     }
